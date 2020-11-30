@@ -1,0 +1,115 @@
+<div class="lamis-edit-form">
+    <div class="lamis-edit-form-container">
+        <form name="form" role="form" novalidate (ngSubmit)="save()" #screeningForm="ngForm">
+            <mat-card class="default">
+                <mat-card-content *ngIf="patient">
+                    <div class="row">
+                        <div class="col-md-6">
+                            <mat-form-field class="full-width">
+                                <input matInput [matDatepicker]="picker"
+                                       placeholder="Date of STI Screening"
+                                       [(ngModel)]="entity.dateScreened"
+                                       #visit="ngModel"
+                                       [max]="today"
+                                       [min]="patient.dateBirth"
+                                       name="visit"
+                                       required>
+                                <mat-datepicker-toggle
+                                        matSuffix
+                                        [for]="picker">
+                                </mat-datepicker-toggle>
+                                <mat-datepicker #picker></mat-datepicker>
+                                <mat-error
+                                        *ngIf="visit.errors && (visit.dirty || visit.touched) && (visit.errors.required)">
+                                    Date of STI Screening is required
+                                </mat-error>
+                                <mat-error
+                                        *ngIf="visit.errors && (visit.dirty || visit.touched) && (visit.errors.min)">
+                                    Date of Screening cannot be before {{patient.dateBirth}}
+                                </mat-error>
+                                <mat-error
+                                        *ngIf="visit.errors && (visit.dirty || visit.touched) && (visit.errors.max)">
+                                    Date of Screening cannot be in the future
+                                </mat-error>
+                            </mat-form-field>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-6">
+                            <mat-form-field class="full-width">
+                                <mat-label>Result of STI Screening</mat-label>
+                                <mat-select name="result" [(ngModel)]="entity.screeningResult" #result="ngModel"
+                                            required>
+                                    <mat-option></mat-option>
+                                    <mat-option [value]="'YES'">Positive</mat-option>
+                                    <mat-option [value]="'NO'">Negative</mat-option>
+                                </mat-select>
+                                <mat-error
+                                        *ngIf="result.errors && (result.dirty || result.touched) && (result.errors.required)">
+                                    Treament Status is required
+                                </mat-error>
+                            </mat-form-field>
+                        </div>
+                    </div>
+                    <div class="row" *ngIf="result.value==='YES'">
+                        <div class="col-md-6">
+                            <mat-form-field class="full-width">
+                                <mat-label>STI Treament Status</mat-label>
+                                <mat-select name="treatmentStatus" [(ngModel)]="entity.treatmentStatus" #treatmentStatus="ngModel"
+                                            required>
+                                    <mat-option></mat-option>
+                                    <mat-option [value]="'YES'">Treated</mat-option>
+                                    <mat-option [value]="'NO'">Not Treated</mat-option>
+                                   
+                                </mat-select>
+                                <mat-error
+                                        *ngIf="treatmentStatus.errors && (treatmentStatus.dirty || treatmentStatus.touched) && (treatmentStatus.errors.required)">
+                                        STI Treament Status is required
+                                </mat-error>
+                            </mat-form-field>
+                        </div>
+                    </div>
+                    <div class="row" *ngIf="entity.treatmentStatus==='YES'">
+                        <div class="col-md-6">
+                            <mat-form-field class="full-width" *ngIf="entity.dateScreened">
+                                <input matInput [matDatepicker]="picker1"
+                                       placeholder="Date Treated"
+                                       [(ngModel)]="entity.dateTreated"
+                                       #treat="ngModel"
+                                       [max]="today"
+                                       [min]="entity.dateScreened"
+                                       name="treat"
+                                       required>
+                                <mat-datepicker-toggle
+                                        matSuffix
+                                        [for]="picker1">
+                                </mat-datepicker-toggle>
+                                <mat-datepicker #picker1></mat-datepicker>
+                                <mat-error
+                                        *ngIf="treat.errors && (treat.dirty || treat.touched) && (treat.errors.required)">
+                                    Date Treated is required
+                                </mat-error>
+                                <mat-error
+                                        *ngIf="treat.errors && (treat.dirty || treat.touched) && (treat.errors.min)">
+                                    Date Treated cannot be before {{entity.dateScreened}}
+                                </mat-error>
+                                <mat-error
+                                        *ngIf="treat.errors && (treat.dirty || treat.touched) && (treat.errors.max)">
+                                    Date Treated cannot be in the future
+                                </mat-error>
+                            </mat-form-field>
+                        </div>
+                    </div>
+                </mat-card-content>
+                <mat-card-actions class="lamis-edit-form-actions">
+                    <button mat-raised-button type="button" (click)="previousState()">Back</button>
+                    <button mat-raised-button color='primary'
+                            [disabled]="screeningForm.invalid || isSaving"
+                            type="submit">
+                        {{!!observation ? 'Update' : 'Save'}}
+                    </button>
+                </mat-card-actions>
+            </mat-card>
+        </form>
+    </div>
+</div>

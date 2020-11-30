@@ -216,7 +216,12 @@ export interface Observation {
     date?: Moment;
     data?: CervicalCancerScreening;
 }
-
+export interface StiScreening {
+    dateScreened?: Moment;
+    screeningResult?: string;
+    treatmentStatus?:String
+    dateTreated?: Moment;
+}
 export interface CervicalCancerScreening {
     dateScreened?: Moment;
     screeningMethod?: string;

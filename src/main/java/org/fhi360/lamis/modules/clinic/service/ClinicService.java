@@ -46,6 +46,7 @@ public class ClinicService {
     }
 
     public void deleteClinic(String clinicId) {
+
         clinicRepository.findByUuid(clinicId).ifPresent(clinic -> deleteClinic(clinic.getId()));
     }
 

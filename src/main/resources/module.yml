@@ -17,6 +17,9 @@ webModules:
   - breadcrumb: CERVICAL CANCER SCREENING
     path: cervical-cancer-screening
     name: CervicalCancerModule
+  - breadcrumb: STI SCREENING
+    path: sti-screening
+    name: StiModule
   - breadcrumb: CASE MANAGEMENT
     path: case-management
     position: 100
