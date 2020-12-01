@@ -1,3 +1,4 @@
+import { StiScreeningDetailComponent } from './../components/sti-screening/sti-screening-detail.component';
 import {ActivatedRouteSnapshot, Resolve, RouterStateSnapshot, Routes} from '@angular/router';
 import {Injectable} from '@angular/core';
 import {Observation} from '../model/clinic.model';
@@ -5,7 +6,7 @@ import {Observable, of} from 'rxjs';
 import {filter, map} from 'rxjs/operators';
 import {HttpResponse} from '@angular/common/http';
 import { StiScreeningService } from './sti-screening.service';
-import { StiScreeningComponent } from '../components/sti-screening/sti-screening.component';
+import { StiScreeningComponent} from '../components/sti-screening/sti-screening.component';
 
 @Injectable({
     providedIn: 'root'

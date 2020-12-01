@@ -8,7 +8,8 @@ import {CovalentDialogsModule, CovalentMessageModule} from '@covalent/core';
 import {CustomFormsModule} from 'ng2-validation';
 import { StiScreeningComponent } from '../components/sti-screening/sti-screening.component';
 import { MaterialModule } from '../material.module';
-import {ROUTES} from './../services/sti-screening.route';
+import {StiObservationResolve, ROUTES} from './../services/sti-screening.route';
+import { StiScreeningDetailComponent } from '../components/sti-screening/sti-screening-detail.component';
 
 @NgModule({
   imports: [
@@ -24,7 +25,8 @@ import {ROUTES} from './../services/sti-screening.route';
       LamisSharedModule,
   ],
   declarations: [
-    StiScreeningComponent
+    StiScreeningComponent,
+    StiScreeningDetailComponent
   ],
   providers: [
       //ObservationResolve
