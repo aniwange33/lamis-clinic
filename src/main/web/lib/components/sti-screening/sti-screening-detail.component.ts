@@ -1,7 +1,7 @@
 import { CardViewBoolItemModel, CardViewDateItemModel, CardViewItem, CardViewTextItemModel, NotificationService } from '@alfresco/adf-core';
 import { Component, OnInit } from '@angular/core';
 import {ActivatedRoute, Router} from '@angular/router';
-import { TdDialogService } from '@covalent/core/dialogs/services/dialog.service';
+import { TdDialogService } from '@covalent/core';
 import { Observation, Patient, StiScreening } from '../../model/clinic.model';
 import { ClinicService } from '../../services/clinic.service';
 import {StiScreeningService} from '../../services/sti-screening.service';
@@ -24,23 +24,29 @@ export class StiScreeningDetailComponent implements OnInit {
     observation: Observation={};
     patient: Patient={};
 
-    constructor(private router: Router, private route: ActivatedRoute, private screeningService: StiScreeningService,
-      private _dialogService: TdDialogService, private clinicService: ClinicService,
+    constructor(
+      private router: Router, 
+      private route: ActivatedRoute, 
+      private screeningService: StiScreeningService,
+      private _dialogService: TdDialogService,
+      private clinicService: ClinicService,
       private notificationService: NotificationService) {
 }
 
 ngOnInit() {
+console.log("I am in Detail component");
 this.route.data.subscribe(({entity}) => {
   this.entity = !!entity && entity.body ? entity.body.data.stiScreening : entity.data.stiScreening;
   this.observation = !!entity && entity.body ? entity.body : entity;
-
   const patientId = this.route.snapshot.paramMap.get('patientId');
   this.clinicService.getPatient(patientId).subscribe((res) => this.patient = res);
   this.buildProperties();
+  console.log(this.patient)
 });
 }
 
 edit() {
+  console.log("calling edit function")
 this.router.navigate(['/', 'sti-screening', this.observation.id, 'patient', this.patient.uuid, 'edit']);
 }
 
@@ -67,13 +73,13 @@ this._dialogService.openConfirm({
 }
 
 buildProperties() {
+console.log("about to build properties")
 this.properties.push(new CardViewDateItemModel({
   key: 'ds',
   value: this.observation.date,
   label: 'Date of Screening',
   format: 'dd MMM, yyyy'
 }));
-
 this.properties.push(new CardViewTextItemModel({
   label: 'Result of STI Screening',
   key: 'adr',
@@ -85,7 +91,7 @@ this.properties.push(new CardViewTextItemModel(
     label:'STI Treament Status',
     key:'adr',
     value:STATUS[this.entity.treatmentStatus]
-  }))
+  }));
 }
   if(this.entity.treatmentStatus=='YES'){
     this.properties.push(new CardViewDateItemModel({

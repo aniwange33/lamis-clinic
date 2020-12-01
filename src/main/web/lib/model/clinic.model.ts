@@ -214,7 +214,7 @@ export interface EAC {
 export interface Observation {
     id?: string;
     date?: Moment;
-    data?: CervicalCancerScreening;
+    data?: any;
 }
 export interface StiScreening {
     dateScreened?: Moment;

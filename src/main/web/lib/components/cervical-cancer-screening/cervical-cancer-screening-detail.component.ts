@@ -47,9 +47,13 @@ export class CervicalCancerScreeningDetailComponent implements OnInit {
     observation: Observation;
     patient: Patient;
 
-    constructor(private router: Router, private route: ActivatedRoute, private screeningService: CervicalCancerScreeningService,
-                private _dialogService: TdDialogService, private clinicService: ClinicService,
-                private notificationService: NotificationService) {
+    constructor(
+        private router: Router,
+        private route: ActivatedRoute, 
+        private screeningService: CervicalCancerScreeningService,
+        private _dialogService: TdDialogService,
+        private clinicService: ClinicService,
+        private notificationService: NotificationService) {
     }
 
     ngOnInit() {

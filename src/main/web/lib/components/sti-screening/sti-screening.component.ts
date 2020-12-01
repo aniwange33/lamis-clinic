@@ -35,7 +35,9 @@ export class StiScreeningComponent implements OnInit {
         this.activatedRoute.data.subscribe(({entity}) => {
             this.observation = !!entity && entity.body ? entity.body : entity;
             if (!!this.observation) {
-                this.entity = this.observation.data;
+                this.entity = this.observation.data.stiScreening;
+                this.entity.dateScreened = this.entity.dateScreened != null? moment(this.entity.dateScreened): null;
+                this.entity.dateTreated = this.entity.dateTreated != null? moment(this.entity.dateTreated): null;
             } else {
                 this.observation = {};
             }

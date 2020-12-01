@@ -1,4 +1,4 @@
-import { StiScreeningDetailComponent } from './../components/sti-screening/sti-screening-detail.component';
+import { StiScreeningDetailComponent } from '../components/sti-screening/sti-screening-detail.component';
 import {ActivatedRouteSnapshot, Resolve, RouterStateSnapshot, Routes} from '@angular/router';
 import {Injectable} from '@angular/core';
 import {Observation} from '../model/clinic.model';
@@ -31,13 +31,13 @@ export const ROUTES: Routes = [
     {
         path: '',
         data: {
-            title: 'STI Screening',
-            breadcrumb: 'STI SCREENING'
+            title:'STI Screening',
+            breadcrumb:'STI SCREENING'
         },
         children: [
             {
                 path: ':id/patient/:patientId/view',
-                component: StiScreeningComponent,
+                component: StiScreeningDetailComponent,
                 resolve: {
                     entity: StiObservationResolve
                 },
