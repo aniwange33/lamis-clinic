@@ -45,7 +45,6 @@ public class CervicalCancerScreenResource {
         observationRepository.deleteById(id);
     }
     //http://localhost:8081/api/sti-screening/by-uuid/a280cf86-48a8-4398-bd26-3e0b213261a5
-
     @DeleteMapping("/sti-screening/by-uuid/{id}")
     public void deleteStiByUuid(@PathVariable String id) {
         observationRepository.deleteById(id);
