@@ -218,8 +218,11 @@ export interface Observation {
 }
 export interface StiScreening {
     dateScreened?: Moment;
+    screeningType?:string;
+    stiType?:string;
     screeningResult?:string;
     treatmentStatus?:string
+    referredForTreatment?: boolean;
     dateTreated?: Moment;
 }
 export interface CervicalCancerScreening {

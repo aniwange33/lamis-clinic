@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import {Component, OnInit} from '@angular/core';
 import * as moment_ from 'moment';
 import {Observable} from 'rxjs';
 import {HttpErrorResponse, HttpResponse} from '@angular/common/http';
@@ -6,29 +6,29 @@ import {ClinicService} from '../../services/clinic.service';
 import {NotificationService} from '@alfresco/adf-core';
 import {ActivatedRoute} from '@angular/router';
 import {AppLoaderService, DATE_FORMAT} from '@lamis/web-core';
-import { StiScreening,Patient,Observation } from '../../model/clinic.model';
+import {StiScreening, Patient, Observation} from '../../model/clinic.model';
 import {StiScreeningService} from '../../services/sti-screening.service';
 
 const moment = moment_;
 
 @Component({
-  selector: 'sti-screening',
-  templateUrl: './sti-screening.component.html',
+    selector: 'sti-screening',
+    templateUrl: './sti-screening.component.html',
 })
 export class StiScreeningComponent implements OnInit {
     entity: StiScreening = {};
-    patient: Patient={};
+    patient: Patient = {};
     observation: Observation = {};
     today = moment();
     isSaving: boolean = false;
 
     constructor(
-      private clinicService: ClinicService,
-      private screeningService: StiScreeningService,
-      protected notification: NotificationService,
-      protected activatedRoute: ActivatedRoute,
-      private appLoaderService: AppLoaderService
-      ) {
+        private clinicService: ClinicService,
+        private screeningService: StiScreeningService,
+        protected notification: NotificationService,
+        protected activatedRoute: ActivatedRoute,
+        private appLoaderService: AppLoaderService
+    ) {
     }
 
     ngOnInit(): void {
@@ -36,8 +36,8 @@ export class StiScreeningComponent implements OnInit {
             this.observation = !!entity && entity.body ? entity.body : entity;
             if (!!this.observation) {
                 this.entity = this.observation.data.stiScreening;
-                this.entity.dateScreened = this.entity.dateScreened != null? moment(this.entity.dateScreened): null;
-                this.entity.dateTreated = this.entity.dateTreated != null? moment(this.entity.dateTreated): null;
+                this.entity.dateScreened = this.entity.dateScreened != null ? moment(this.entity.dateScreened) : null;
+                this.entity.dateTreated = this.entity.dateTreated != null ? moment(this.entity.dateTreated) : null;
             } else {
                 this.observation = {};
             }
@@ -62,9 +62,13 @@ export class StiScreeningComponent implements OnInit {
         window.history.back();
     }
 
+    setStiType(stiTye: string) {
+        console.log("amos")
+        this.entity.stiType = stiTye;
+    }
 
     save() {
-      console.log(this.entity)
+        console.log(this.entity)
         //this.submitButton.disabled = true;
         //this.progressBar.mode = 'indeterminate';
         this.isSaving = true;
@@ -92,9 +96,13 @@ export class StiScreeningComponent implements OnInit {
         }
     }
 
-    private subscribeToSaveResponse(
-       result: Observable<HttpResponse<any>>
-      ) {
+    private
+
+    subscribeToSaveResponse(
+        result
+            :
+            Observable<HttpResponse<any>>
+    ) {
         result.subscribe(
             (res: HttpResponse<any>) => this.onSaveSuccess(res.body),
             (res: HttpErrorResponse) => {
@@ -103,7 +111,7 @@ export class StiScreeningComponent implements OnInit {
             });
     }
 
-    private onSaveSuccess(result: any) {
+    private onSaveSuccess(resul: any) {
         this.appLoaderService.close();
         this.isSaving = false;
         this.notification.showInfo('STI screening successfully saved');
@@ -121,5 +129,5 @@ export class StiScreeningComponent implements OnInit {
     protected onError(errorMessage: string) {
         this.appLoaderService.close();
         this.notification.showError(errorMessage);
-    }  
+    }
 }

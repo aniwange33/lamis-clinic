@@ -7,7 +7,7 @@
                         <div class="col-md-6">
                             <mat-form-field class="full-width">
                                 <input matInput [matDatepicker]="picker"
-                                       placeholder="Date of STI Screening"
+                                       placeholder="Date of Screening"
                                        [(ngModel)]="entity.dateScreened"
                                        #visit="ngModel"
                                        [max]="today"
@@ -21,7 +21,7 @@
                                 <mat-datepicker #picker></mat-datepicker>
                                 <mat-error
                                         *ngIf="visit.errors && (visit.dirty || visit.touched) && (visit.errors.required)">
-                                    Date of STI Screening is required
+                                    Date of Screening is required
                                 </mat-error>
                                 <mat-error
                                         *ngIf="visit.errors && (visit.dirty || visit.touched) && (visit.errors.min)">
@@ -37,39 +37,74 @@
                     <div class="row">
                         <div class="col-md-6">
                             <mat-form-field class="full-width">
-                                <mat-label>Result of STI Screening</mat-label>
+                                <mat-label>Screening Type</mat-label>
+                                <mat-select class="adf-full-width-input" name="type" [(ngModel)]="entity.screeningType" #type="ngModel" required>
+                                    <mat-option></mat-option>
+                                    <mat-option [value]="'FIRST_TIME'">First Time</mat-option>
+                                    <mat-option [value]="'FOLLOWUP'">Followup after previous negative result or
+                                        suspected STI
+                                    </mat-option>
+                                    <mat-option [value]="'POST_TREATMENT_FOLLOWUP'">Post-treatment Followup</mat-option>
+                                </mat-select>
+                                <mat-error
+                                        *ngIf="type.errors && (type.dirty || type.touched) && (type.errors.required)">
+                                    Screening type is required
+                                </mat-error>
+                            </mat-form-field>
+                        </div>
+                        <div class="col-md-6">
+                            <mat-form-field class="full-width">
+                                <mat-label>Type of STI</mat-label>
+                                <mat-select name="method" [(ngModel)]="entity.stiType" #method="ngModel"
+                                            required>
+                                    <mat-option></mat-option>
+                                    <mat-option [value]="'Chlamydia'">Chlamydia</mat-option>
+                                    <mat-option [value]="'Gonorrhea'">Gonorrhea</mat-option>
+                                    <mat-option [value]="'Syphilis'">Syphilis</mat-option>
+                                    <mat-option [value]="'Hepatitis A'">Hepatitis A</mat-option>
+                                    <mat-option [value]="'Hepatitis B'">Hepatitis B</mat-option>
+                                    <mat-option [value]="'Hepatitis C'">Hepatitis C</mat-option>
+                                    <mat-option [value]="'Herpes'">Herpes</mat-option>
+                                    <mat-option [value]="'Others'">Others</mat-option>
+                                </mat-select>
+                                <mat-error
+                                        *ngIf="method.errors && (method.dirty || method.touched) && (method.errors.required)">
+                                    Screening method is required
+                                </mat-error>
+                            </mat-form-field>
+                            <input *ngIf="entity.stiType=='Others'"
+                                   name="stiType" ngModel
+                                   matInput placeholder="Please enter STI type"  type="text"
+                                   #stiType="ngModel"  (change)="setStiType(stiType.value)"
+                            />
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-6">
+                            <mat-form-field class="full-width">
+                                <mat-label>Result of Screening</mat-label>
                                 <mat-select name="result" [(ngModel)]="entity.screeningResult" #result="ngModel"
                                             required>
                                     <mat-option></mat-option>
-                                    <mat-option [value]="'YES'">Positive</mat-option>
-                                    <mat-option [value]="'NO'">Negative</mat-option>
+                                    <mat-option [value]="'NEGATIVE'">Negative</mat-option>
+                                    <mat-option [value]="'POSITIVE'">Positive</mat-option>
+                                    <mat-option [value]="'SUSPICIOUS'">Suspicious STI</mat-option>
                                 </mat-select>
                                 <mat-error
                                         *ngIf="result.errors && (result.dirty || result.touched) && (result.errors.required)">
-                                    Treament Status is required
+                                    Result of Screening is required
                                 </mat-error>
                             </mat-form-field>
                         </div>
-                    </div>
-                    <div class="row" *ngIf="result.value==='YES'">
-                        <div class="col-md-6">
-                            <mat-form-field class="full-width">
-                                <mat-label>STI Treament Status</mat-label>
-                                <mat-select name="treatmentStatus" [(ngModel)]="entity.treatmentStatus" #treatmentStatus="ngModel"
-                                            required>
-                                    <mat-option></mat-option>
-                                    <mat-option [value]="'YES'">Treated</mat-option>
-                                    <mat-option [value]="'NO'">Not Treated</mat-option>
-                                   
-                                </mat-select>
-                                <mat-error
-                                        *ngIf="treatmentStatus.errors && (treatmentStatus.dirty || treatmentStatus.touched) && (treatmentStatus.errors.required)">
-                                        STI Treament Status is required
-                                </mat-error>
-                            </mat-form-field>
+                        <div class="col-md-6" *ngIf="entity.screeningResult === 'POSITIVE'">
+                            <mat-checkbox [(ngModel)]="entity.referredForTreatment"
+                                          name="uibn"
+                            >
+                                Referred for Treatment?
+                            </mat-checkbox>
                         </div>
                     </div>
-                    <div class="row" *ngIf="entity.treatmentStatus==='YES'">
+                    <div class="row" *ngIf="entity.referredForTreatment">
                         <div class="col-md-6">
                             <mat-form-field class="full-width" *ngIf="entity.dateScreened">
                                 <input matInput [matDatepicker]="picker1"
