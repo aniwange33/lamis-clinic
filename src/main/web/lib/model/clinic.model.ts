@@ -226,6 +226,17 @@ export interface StiScreening {
     dateTreated?: Moment;
     others?:string;
 }
+export interface GbvScreening {
+    dateScreened?: Moment;
+    screeningType?:string;
+    gbvType?:string;
+    screeningResult?:string;
+    treatmentStatus?:string
+    reported?: boolean;
+    placeOnPep?:boolean;
+    pepDate?:Moment;
+    dateReported?: Moment;
+}
 export interface CervicalCancerScreening {
     dateScreened?: Moment;
     screeningMethod?: string;

@@ -2,7 +2,7 @@ basePackage: org.fhi360.lamis.modules.clinic
 name: LAMISClinicModule
 dependencies: {LAMISPatientModule: 1.0.0}
 store: true
-umdLocation: /across/resources/static/clinic/js/bundles/lamis-clinic-1.4.6.umd.js
+umdLocation: /across/resources/static/clinic/js/bundles/lamis-clinic-1.4.7.umd.js
 webModules:
   - breadcrumb: CLINIC
     name: ClinicModule
@@ -20,6 +20,9 @@ webModules:
   - breadcrumb: STI SCREENING
     path: sti-screening
     name: StiModule
+  - breadcrumb: GBV SCREENING
+    path: gbv-screening
+    name: GbvModule
   - breadcrumb: CASE MANAGEMENT
     path: case-management
     position: 100
