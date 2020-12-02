@@ -1,4 +1,3 @@
-import {Component, OnInit} from '@angular/core';
 import {
     CardViewBoolItemModel,
     CardViewDateItemModel,
@@ -6,51 +5,43 @@ import {
     CardViewTextItemModel,
     NotificationService
 } from '@alfresco/adf-core';
-import {CervicalCancerScreening, Observation, Patient} from '../../model/clinic.model';
+import {Component, OnInit} from '@angular/core';
 import {ActivatedRoute, Router} from '@angular/router';
 import {TdDialogService} from '@covalent/core';
-import {CervicalCancerScreeningService} from '../../services/cervical-cancer-screening.service';
+import {GbvScreening, Observation, Patient, StiScreening} from '../../model/clinic.model';
 import {ClinicService} from '../../services/clinic.service';
+import {StiScreeningService} from '../../services/sti-screening.service';
 
 const RESULT = {
     NEGATIVE: 'Negative',
     POSITIVE: 'Positive',
-    SUSPICIOUS: 'Suspicious Cancerous Lesions'
+    SUSPICIOUS: 'Suspicious GVB'
 };
 
-const METHOD = {
-    VIA: 'Visual Inspection with Acetric Acid (VIA)',
-    VILI: 'Visual Inspection with Lugos Iodine (VILI)',
-    PAP_SMEAR: 'PAP Smear'
+const STI_TYPE = {
+    Chlamydia: 'SEXUAL',
+    Gonorrhea: 'NON SEXUAL',
 };
-const LESION_METHOD = {
-    CRYOTHERAPY: 'Cryotherapy',
-    THERMAL_ABLATION: 'Thermal Ablation/ Thermocoagulation',
-    LEETZ_LEEP: 'LEETZ/ LEEP',
-    CONIZATION: 'Conization Knifer/ Lagor'
-};
-
 const TYPE = {
     FIRST_TIME: 'First Time',
-    FOLLOWUP: 'Followup after previous negative result or suspected cancer',
+    FOLLOWUP: 'Followup after previous negative result',
     POST_TREATMENT_FOLLOWUP: 'Post-treatment Followup'
 };
 
 @Component({
-    selector: 'cervical-screening-detail',
-    templateUrl: './cervical-cancer-screening-detail.component.html'
+    selector: 'gbv-screening-detail',
+    templateUrl: './gbv-screening-detail.component.html',
 })
-export class CervicalCancerScreeningDetailComponent implements OnInit {
-
+export class GbvScreeningDetailComponent implements OnInit {
     properties: CardViewItem[] = [];
-    entity: CervicalCancerScreening;
-    observation: Observation;
-    patient: Patient;
+    entity: GbvScreening = {}
+    observation: Observation = {};
+    patient: Patient = {};
 
     constructor(
         private router: Router,
-        private route: ActivatedRoute, 
-        private screeningService: CervicalCancerScreeningService,
+        private route: ActivatedRoute,
+        private screeningService: StiScreeningService,
         private _dialogService: TdDialogService,
         private clinicService: ClinicService,
         private notificationService: NotificationService) {
@@ -58,23 +49,24 @@ export class CervicalCancerScreeningDetailComponent implements OnInit {
 
     ngOnInit() {
         this.route.data.subscribe(({entity}) => {
-            this.entity = !!entity && entity.body ? entity.body.data.cervicalCancerScreening : entity.data.cervicalCancerScreening;
+            this.entity = !!entity && entity.body ? entity.body.data.gbvScreening: entity.data.gbvScreening;
             this.observation = !!entity && entity.body ? entity.body : entity;
-
             const patientId = this.route.snapshot.paramMap.get('patientId');
             this.clinicService.getPatient(patientId).subscribe((res) => this.patient = res);
             this.buildProperties();
+            console.log(this.patient)
         });
     }
 
     edit() {
-        this.router.navigate(['/', 'cervical-cancer-screening', this.observation.id, 'patient', this.patient.uuid, 'edit']);
+        console.log("calling edit function")
+        this.router.navigate(['/', 'gbv-screening', this.observation.id, 'patient', this.patient.uuid, 'edit']);
     }
 
     delete() {
         this._dialogService.openConfirm({
             title: 'Confirm',
-            message: 'Do you want to delete this Cervical cancer screening, action cannot be reversed?',
+            message: 'Do you want to delete this GBV screening, action cannot be reversed?',
             cancelButton: 'No',
             acceptButton: 'Yes',
             width: '500px',
@@ -106,9 +98,10 @@ export class CervicalCancerScreeningDetailComponent implements OnInit {
             label: 'Screening Type',
         }));
         this.properties.push(new CardViewTextItemModel({
-            label: 'Screening Method',
+            label: 'GBV Type',
             key: 'fs',
-            value: METHOD[this.entity.screeningMethod]
+            value: STI_TYPE[this.entity.gbvType]
+
         }));
         this.properties.push(new CardViewTextItemModel({
             label: 'Result',
@@ -116,26 +109,27 @@ export class CervicalCancerScreeningDetailComponent implements OnInit {
             value: RESULT[this.entity.screeningResult]
         }));
         this.properties.push(new CardViewBoolItemModel({
-            label: 'Referred for Treatment',
+            label: 'Reported?',
             key: 'bw',
-            value: this.entity.referredForTreatment
+            value: this.entity.reported
         }));
-
-        if (!!this.entity.referredForTreatment) {
-            this.properties.push(new CardViewTextItemModel({
-                label: 'Precancerous Lesions Treatment method',
-                key: 'adr',
-                value: LESION_METHOD[this.entity.precancerousLesionsTreatmentMethod]
-            }));
-
-            this.properties.push(new CardViewDateItemModel({
-                key: 'ds',
-                value: this.entity.dateTreated,
-                label: 'Date of Treated',
-                format: 'dd MMM, yyyy'
-            }));
-        }
-
+        this.properties.push(new CardViewBoolItemModel({
+            label: 'Placed on PEP?',
+            key: 'bw',
+            value: this.entity.placeOnPep
+        }));
+        this.properties.push(new CardViewDateItemModel({
+            key: 'ds',
+            value: this.entity.dateReported,
+            label: 'Date of Reported',
+            format: 'dd MMM, yyyy'
+        }));
+        this.properties.push(new CardViewDateItemModel({
+            key: 'ds',
+            value: this.entity.pepDate,
+            label: 'Date of placed on PEP',
+            format: 'dd MMM, yyyy'
+        }));
     }
 
     previousState() {
@@ -143,3 +137,4 @@ export class CervicalCancerScreeningDetailComponent implements OnInit {
     }
 
 }
+

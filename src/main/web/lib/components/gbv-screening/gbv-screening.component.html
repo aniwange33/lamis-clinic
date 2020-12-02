@@ -54,42 +54,30 @@
                         </div>
                         <div class="col-md-6">
                             <mat-form-field class="full-width">
-                                <mat-label>Type of STI</mat-label>
-                                <mat-select name="method" [(ngModel)]="entity.stiType" #method="ngModel"
+                                <mat-label>Type of Gender Base Violent(GBV)</mat-label>
+                                <mat-select name="method" [(ngModel)]="entity.gbvType" #method="ngModel"
                                             required>
                                     <mat-option></mat-option>
-                                    <mat-option [value]="'Chlamydia'">Chlamydia</mat-option>
-                                    <mat-option [value]="'Gonorrhea'">Gonorrhea</mat-option>
-                                    <mat-option [value]="'Syphilis'">Syphilis</mat-option>
-                                    <mat-option [value]="'Hepatitis A'">Hepatitis A</mat-option>
-                                    <mat-option [value]="'Hepatitis B'">Hepatitis B</mat-option>
-                                    <mat-option [value]="'Hepatitis C'">Hepatitis C</mat-option>
-                                    <mat-option [value]="'Herpes'">Herpes</mat-option>
-                                    <mat-option [value]="'Others'">Others</mat-option>
+                                    <mat-option [value]="'SEXUAL'">SEXUAL</mat-option>
+                                    <mat-option [value]="'NON SEXUAL'">NON SEXUAL</mat-option>
                                 </mat-select>
                                 <mat-error
                                         *ngIf="method.errors && (method.dirty || method.touched) && (method.errors.required)">
                                     Screening method is required
                                 </mat-error>
                             </mat-form-field>
-                            <input *ngIf="entity.stiType=='Others'"
-                                   name="stiType" ngModel
-                                   matInput placeholder="Please enter STI type"  type="text"
-                                   #stiType="ngModel"  (change)="setStiType(stiType.value)"
-                                   [(ngModel)]="entity.others"
-                            />
                         </div>
                     </div>
                     <div class="row">
                         <div class="col-md-6">
                             <mat-form-field class="full-width">
                                 <mat-label>Result of Screening</mat-label>
-                                <mat-select name="result" [(ngModel)]="entity.screeningResult" #result="ngModel"
+                                <mat-select ngModel name="result" [(ngModel)]="entity.screeningResult" #result="ngModel"
                                             required>
                                     <mat-option></mat-option>
                                     <mat-option [value]="'NEGATIVE'">Negative</mat-option>
                                     <mat-option [value]="'POSITIVE'">Positive</mat-option>
-                                    <mat-option [value]="'SUSPICIOUS'">Suspicious STI</mat-option>
+                                    <mat-option [value]="'SUSPICIOUS'">Suspicious GBV</mat-option>
                                 </mat-select>
                                 <mat-error
                                         *ngIf="result.errors && (result.dirty || result.touched) && (result.errors.required)">
@@ -98,23 +86,30 @@
                             </mat-form-field>
                         </div>
                         <div class="col-md-6" *ngIf="entity.screeningResult === 'POSITIVE'">
-                            <mat-checkbox [(ngModel)]="entity.referredForTreatment"
+                            <mat-checkbox [(ngModel)]="entity.reported"
                                           name="uibn"
                             >
-                                Referred for Treatment?
+                                reported?
+                            </mat-checkbox>
+                        </div>
+                        <div class="col-md-6" *ngIf="entity.screeningResult === 'POSITIVE'">
+                            <mat-checkbox [(ngModel)]="entity.placeOnPep"
+                                          name="uibm"
+                            >
+                               placed on PEP?
                             </mat-checkbox>
                         </div>
                     </div>
-                    <div class="row" *ngIf="entity.referredForTreatment">
+                    <div class="row" *ngIf="entity.reported">
                         <div class="col-md-6">
                             <mat-form-field class="full-width" *ngIf="entity.dateScreened">
                                 <input matInput [matDatepicker]="picker1"
-                                       placeholder="Date Treated"
-                                       [(ngModel)]="entity.dateTreated"
-                                       #treat="ngModel"
+                                       placeholder="Date Reported"
+                                       [(ngModel)]="entity.dateReported"
+                                       #report="ngModel"
                                        [max]="today"
                                        [min]="entity.dateScreened"
-                                       name="treat"
+                                       name="report"
                                        required>
                                 <mat-datepicker-toggle
                                         matSuffix
@@ -122,15 +117,46 @@
                                 </mat-datepicker-toggle>
                                 <mat-datepicker #picker1></mat-datepicker>
                                 <mat-error
-                                        *ngIf="treat.errors && (treat.dirty || treat.touched) && (treat.errors.required)">
+                                        *ngIf="report.errors && (report.dirty || report.touched) && (report.errors.required)">
                                     Date Treated is required
                                 </mat-error>
                                 <mat-error
-                                        *ngIf="treat.errors && (treat.dirty || treat.touched) && (treat.errors.min)">
+                                        *ngIf="report.errors && (report.dirty || report.touched) && (report.errors.min)">
                                     Date Treated cannot be before {{entity.dateScreened}}
                                 </mat-error>
                                 <mat-error
-                                        *ngIf="treat.errors && (treat.dirty || treat.touched) && (treat.errors.max)">
+                                        *ngIf="report.errors && (report.dirty || report.touched) && (report.errors.max)">
+                                    Date Treated cannot be in the future
+                                </mat-error>
+                            </mat-form-field>
+                        </div>
+                    </div>
+                    <div class="row" *ngIf="entity.placeOnPep">
+                        <div class="col-md-6">
+                            <mat-form-field class="full-width" *ngIf="entity.dateScreened">
+                                <input matInput [matDatepicker]="picker1"
+                                       placeholder="Date Placed on PEP"
+                                       [(ngModel)]="entity.pepDate"
+                                       #pep="ngModel"
+                                       [max]="today"
+                                       [min]="entity.dateScreened"
+                                       name="pep"
+                                       required>
+                                <mat-datepicker-toggle
+                                        matSuffix
+                                        [for]="picker1">
+                                </mat-datepicker-toggle>
+                                <mat-datepicker #picker1></mat-datepicker>
+                                <mat-error
+                                        *ngIf="pep.errors && (pep.dirty || pep.touched) && (pep.errors.required)">
+                                    Date Treated is required
+                                </mat-error>
+                                <mat-error
+                                        *ngIf="pep.errors && (pep.dirty || pep.touched) && (pep.errors.min)">
+                                    Date Treated cannot be before {{entity.dateScreened}}
+                                </mat-error>
+                                <mat-error
+                                        *ngIf="pep.errors && (pep.dirty || pep.touched) && (pep.errors.max)">
                                     Date Treated cannot be in the future
                                 </mat-error>
                             </mat-form-field>

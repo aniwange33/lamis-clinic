@@ -6,10 +6,10 @@ import {CoreModule} from '@alfresco/adf-core';
 import {RouterModule} from '@angular/router';
 import {CovalentDialogsModule, CovalentMessageModule} from '@covalent/core';
 import {CustomFormsModule} from 'ng2-validation';
-import { StiScreeningComponent } from '../components/sti-screening/sti-screening.component';
-import { MaterialModule } from '../material.module';
-import {StiObservationResolve, ROUTES} from './../services/sti-screening.route';
-import { StiScreeningDetailComponent } from '../components/sti-screening/sti-screening-detail.component';
+import {MaterialModule} from './material.module';
+import {GbvScreeningComponent} from "./components/gbv-screening/gbv-screening.component";
+import {GbvScreeningDetailComponent} from "./components/gbv-screening/gbv-screening-detail.component";
+import {GbvObservationResolve, ROUTES} from './services/gbv-screening.route';
 
 @NgModule({
   imports: [
@@ -25,11 +25,11 @@ import { StiScreeningDetailComponent } from '../components/sti-screening/sti-scr
       LamisSharedModule,
   ],
   declarations: [
-    StiScreeningComponent,
-    StiScreeningDetailComponent
+   GbvScreeningComponent,
+   GbvScreeningDetailComponent
   ],
   providers: [
       //ObservationResolve
   ]
 })
-export class StiModule { }
+export class GbvModule { }

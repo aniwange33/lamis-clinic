@@ -33,13 +33,17 @@ public class CervicalCancerScreenResource {
         return patientRepository.findById(id).map(screeningService::hasCervicalCancerScreening).orElse(false);
     }
 
+
     @DeleteMapping("/cervical-cancer-screenings/{id}")
     public void delete(@PathVariable String id) {
         observationRepository.deleteById(id);
     }
 
+
     @DeleteMapping("/cervical-cancer-screenings/by-uuid/{id}")
     public void deleteByUuid(@PathVariable String id) {
         observationRepository.deleteById(id);
     }
+
+
 }

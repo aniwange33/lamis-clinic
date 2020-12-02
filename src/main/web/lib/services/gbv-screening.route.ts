@@ -1,4 +1,3 @@
-import { StiScreeningDetailComponent } from '../components/sti-screening/sti-screening-detail.component';
 import {ActivatedRouteSnapshot, Resolve, RouterStateSnapshot, Routes} from '@angular/router';
 import {Injectable} from '@angular/core';
 import {Observation} from '../model/clinic.model';
@@ -6,12 +5,13 @@ import {Observable, of} from 'rxjs';
 import {filter, map} from 'rxjs/operators';
 import {HttpResponse} from '@angular/common/http';
 import { StiScreeningService } from './sti-screening.service';
-import { StiScreeningComponent} from '../components/sti-screening/sti-screening.component';
+import {GbvScreeningComponent} from "../components/gbv-screening/gbv-screening.component";
+import {GbvScreeningDetailComponent} from "../components/gbv-screening/gbv-screening-detail.component";
 
 @Injectable({
     providedIn: 'root'
 })
-export class StiObservationResolve implements Resolve<Observation> {
+export class GbvObservationResolve implements Resolve<Observation> {
  constructor(private service: StiScreeningService) {
     }
 
@@ -31,43 +31,43 @@ export const ROUTES: Routes = [
     {
         path: '',
         data: {
-            title:'STI Screening',
-            breadcrumb:'STI SCREENING'
+            title:'GBV Screening',
+            breadcrumb:'GBV SCREENING'
         },
         children: [
             {
                 path: ':id/patient/:patientId/view',
-                component: StiScreeningDetailComponent,
+                component: GbvScreeningDetailComponent,
                 resolve: {
-                    entity: StiObservationResolve
+                    entity: GbvObservationResolve
                 },
                 data: {
                     authorities: ['ROLE_USER'],
-                    title: 'STI Screening',
-                    breadcrumb: 'STI SCREENING'
+                    title: 'GBV Screening',
+                    breadcrumb: 'GBV SCREENING'
                 },
                 //canActivate: [UserRouteAccessService]
             },
             {
                 path: 'patient/:patientId/new',
-                component: StiScreeningComponent,
+                component: GbvScreeningComponent,
                 data: {
                     authorities: ['ROLE_DEC'],
-                    title: 'STI Screening',
-                    breadcrumb: 'STI SCREENING'
+                    title: 'GBV Screening',
+                    breadcrumb: 'GBV SCREENING'
                 },
                 //canActivate: [UserRouteAccessService]
             },
             {
                 path: ':id/patient/:patientId/edit',
-                component: StiScreeningComponent,
+                component: GbvScreeningComponent,
                 resolve: {
-                    entity: StiObservationResolve
+                    entity: GbvObservationResolve
                 },
                 data: {
                     authorities: ['ROLE_DEC'],
-                    title: 'STI Screening',
-                    breadcrumb: 'STI SCREENING'
+                    title: 'GBV Screening',
+                    breadcrumb: 'GBV SCREENING'
                 },
                 //canActivate: [UserRouteAccessService]
             }

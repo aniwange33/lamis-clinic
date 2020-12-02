@@ -214,13 +214,28 @@ export interface EAC {
 export interface Observation {
     id?: string;
     date?: Moment;
-    data?: CervicalCancerScreening;
+    data?: any;
 }
 export interface StiScreening {
     dateScreened?: Moment;
-    screeningResult?: string;
-    treatmentStatus?:String
+    screeningType?:string;
+    stiType?:string;
+    screeningResult?:string;
+    treatmentStatus?:string
+    referredForTreatment?: boolean;
     dateTreated?: Moment;
+    others?:string;
+}
+export interface GbvScreening {
+    dateScreened?: Moment;
+    screeningType?:string;
+    gbvType?:string;
+    screeningResult?:string;
+    treatmentStatus?:string
+    reported?: boolean;
+    placeOnPep?:boolean;
+    pepDate?:Moment;
+    dateReported?: Moment;
 }
 export interface CervicalCancerScreening {
     dateScreened?: Moment;

@@ -6,17 +6,17 @@ import {ClinicService} from '../../services/clinic.service';
 import {NotificationService} from '@alfresco/adf-core';
 import {ActivatedRoute} from '@angular/router';
 import {AppLoaderService, DATE_FORMAT} from '@lamis/web-core';
-import {StiScreening, Patient, Observation} from '../../model/clinic.model';
 import {StiScreeningService} from '../../services/sti-screening.service';
+import {GbvScreening, Observation, Patient} from "../../model/clinic.model";
 
 const moment = moment_;
 
 @Component({
-    selector: 'sti-screening',
-    templateUrl: './sti-screening.component.html',
+    selector: 'gbv-screening',
+    templateUrl: './gbv-screening.component.html',
 })
-export class StiScreeningComponent implements OnInit {
-    entity: StiScreening = {};
+export class GbvScreeningComponent implements OnInit {
+    entity: GbvScreening = {};
     patient: Patient = {};
     observation: Observation = {};
     today = moment();
@@ -35,9 +35,10 @@ export class StiScreeningComponent implements OnInit {
         this.activatedRoute.data.subscribe(({entity}) => {
             this.observation = !!entity && entity.body ? entity.body : entity;
             if (!!this.observation) {
-                this.entity = this.observation.data.stiScreening;
+                this.entity = this.observation.data.gbvScreening;
                 this.entity.dateScreened = this.entity.dateScreened != null ? moment(this.entity.dateScreened) : null;
-                this.entity.dateTreated = this.entity.dateTreated != null ? moment(this.entity.dateTreated) : null;
+                this.entity.dateReported = this.entity.dateReported != null ? moment(this.entity.dateReported) : null;
+                this.entity.pepDate = this.entity.pepDate != null ? moment(this.entity.pepDate) : null;
             } else {
                 this.observation = {};
             }
@@ -64,7 +65,7 @@ export class StiScreeningComponent implements OnInit {
 
     setStiType(stiTye: string) {
         console.log("amos")
-        this.entity.stiType = stiTye;
+        this.entity.gbvType = stiTye;
     }
 
     save() {
@@ -73,22 +74,18 @@ export class StiScreeningComponent implements OnInit {
         //this.progressBar.mode = 'indeterminate';
         this.isSaving = true;
         this.appLoaderService.open('Saving cancer screening..');
-        if(this.entity.stiType !== 'Others'){
-            this.entity.others = '';
-        }
-
         const data = {
             id: this.observation && this.observation.id || null,
             patient: this.patient,
             date: this.entity.dateScreened.format(DATE_FORMAT),
             facility: this.patient.facility,
-            type: 'STI_SCREENING',
+            type: 'GBV_SCREENING',
             data: {
-                stiScreening: Object.assign({}, this.entity, {
+                gbvScreening: Object.assign({}, this.entity, {
                     dateScreened: this.entity.dateScreened != null && this.entity.dateScreened.isValid() ?
                         this.entity.dateScreened.format(DATE_FORMAT) : null,
-                    dateTreated: this.entity.dateTreated != null && this.entity.dateTreated.isValid() ?
-                        this.entity.dateTreated.format(DATE_FORMAT) : null,
+                    dateTreated: this.entity.dateReported != null && this.entity.dateReported.isValid() ?
+                        this.entity.dateReported.format(DATE_FORMAT) : null,
                 })
             }
         };
