@@ -73,6 +73,9 @@ export class StiScreeningComponent implements OnInit {
         //this.progressBar.mode = 'indeterminate';
         this.isSaving = true;
         this.appLoaderService.open('Saving cancer screening..');
+        if(this.entity.stiType !== 'Others'){
+            this.entity.others = '';
+        }
 
         const data = {
             id: this.observation && this.observation.id || null,
@@ -96,13 +99,8 @@ export class StiScreeningComponent implements OnInit {
         }
     }
 
-    private
 
-    subscribeToSaveResponse(
-        result
-            :
-            Observable<HttpResponse<any>>
-    ) {
+    subscribeToSaveResponse(result: Observable<HttpResponse<any>>) {
         result.subscribe(
             (res: HttpResponse<any>) => this.onSaveSuccess(res.body),
             (res: HttpErrorResponse) => {

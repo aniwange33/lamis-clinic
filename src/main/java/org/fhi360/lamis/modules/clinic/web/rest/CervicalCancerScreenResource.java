@@ -33,13 +33,22 @@ public class CervicalCancerScreenResource {
         return patientRepository.findById(id).map(screeningService::hasCervicalCancerScreening).orElse(false);
     }
 
+
     @DeleteMapping("/cervical-cancer-screenings/{id}")
     public void delete(@PathVariable String id) {
         observationRepository.deleteById(id);
     }
 
+
     @DeleteMapping("/cervical-cancer-screenings/by-uuid/{id}")
     public void deleteByUuid(@PathVariable String id) {
         observationRepository.deleteById(id);
     }
+    //http://localhost:8081/api/sti-screening/by-uuid/a280cf86-48a8-4398-bd26-3e0b213261a5
+
+    @DeleteMapping("/sti-screening/by-uuid/{id}")
+    public void deleteStiByUuid(@PathVariable String id) {
+        observationRepository.deleteById(id);
+    }
+
 }

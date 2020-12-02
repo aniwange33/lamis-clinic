@@ -54,7 +54,6 @@ export class StiScreeningDetailComponent implements OnInit {
     }
 
     ngOnInit() {
-        console.log("I am in Detail component");
         this.route.data.subscribe(({entity}) => {
             this.entity = !!entity && entity.body ? entity.body.data.stiScreening : entity.data.stiScreening;
             this.observation = !!entity && entity.body ? entity.body : entity;

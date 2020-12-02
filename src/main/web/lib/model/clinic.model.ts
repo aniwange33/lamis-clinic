@@ -224,6 +224,7 @@ export interface StiScreening {
     treatmentStatus?:string
     referredForTreatment?: boolean;
     dateTreated?: Moment;
+    others?:string;
 }
 export interface CervicalCancerScreening {
     dateScreened?: Moment;

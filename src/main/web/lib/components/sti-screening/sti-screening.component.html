@@ -76,6 +76,7 @@
                                    name="stiType" ngModel
                                    matInput placeholder="Please enter STI type"  type="text"
                                    #stiType="ngModel"  (change)="setStiType(stiType.value)"
+                                   [(ngModel)]="entity.others"
                             />
                         </div>
                     </div>
